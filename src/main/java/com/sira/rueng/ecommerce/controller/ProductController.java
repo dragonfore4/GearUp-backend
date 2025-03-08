@@ -1,0 +1,104 @@
+package com.sira.rueng.ecommerce.controller;
+
+import com.sira.rueng.ecommerce.model.Product;
+import com.sira.rueng.ecommerce.response.ErrorResponse;
+import com.sira.rueng.ecommerce.service.ProductService;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api")
+public class ProductController {
+
+    private ProductService productService;
+
+    @Autowired
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> productList = productService.getAllProducts();
+        return ResponseEntity.ok(productList);
+    }
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable Integer id) {
+        Optional<Product> optionalProduct = productService.getProductById(id);
+
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            return ResponseEntity.ok(product);
+        } else {
+            Map<String, String> errorResponse = new HashMap<>();
+            ErrorResponse error = new ErrorResponse("Product not found", HttpStatus.NO_CONTENT.value());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        }
+    }
+
+    // Create Product
+//    @PostMapping("/products")
+//    public ResponseEntity<?> createProduct(@RequestBody Product product) {
+//        try {
+//            Product createdProduct = productService.createProduct(product);
+//
+//            return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>("Product creation failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+//        }
+//    }
+
+    // Create Product
+    @PostMapping("/products")
+    public ResponseEntity<?> createProduct(
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("price") double price,
+            @RequestParam("stock") int stock,
+            @RequestParam(value = "image", required = false) MultipartFile image) {
+        try {
+            Product createdProduct = productService.createProduct(name, description, price, stock, image);
+
+            return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Product creation failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // update
+    @PutMapping("/products/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Integer id, @RequestBody Product productDetails) {
+        Product updatedProduct = productService.updateProduct(id, productDetails);
+        if (updatedProduct != null) {
+            return ResponseEntity.ok(updatedProduct);
+        } else {
+            ErrorResponse error = new ErrorResponse("User not found", 404);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        }
+    }
+
+    // delete
+    @DeleteMapping("/products/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer id) {
+        // Check if the product exists
+        try {
+            productService.deleteProduct(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "An Error occured while deleting the product"));
+        }
+    }
+
+}
