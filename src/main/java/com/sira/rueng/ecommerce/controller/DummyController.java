@@ -22,7 +22,7 @@ public class DummyController {
     @PostMapping("/upload")
     public ResponseEntity<Map> uploadFromUrl(@RequestParam(value = "image", required = false) MultipartFile image) {
         try {
-            System.out.println(image.getOriginalFilename());
+//            System.out.println(image.getOriginalFilename());
 //            Map result = cloudinaryService.uploadImage(image);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {

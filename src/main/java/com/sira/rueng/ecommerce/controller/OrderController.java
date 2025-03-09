@@ -58,4 +58,10 @@ public class OrderController {
         List<OrderDetail> orderDetails = orderService.getOrderDetailsByOrderId(orderId);
         return ResponseEntity.ok(orderDetails);
     }
+
+    @GetMapping("/orders/user/{userId}")
+    public ResponseEntity<List<Order>> getOrderByUserId(@PathVariable Integer userId) {
+        List<Order> orders = orderService.getOrderByUserId(userId);
+        return ResponseEntity.ok(orders);
+    }
 }

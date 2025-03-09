@@ -64,7 +64,7 @@ public class ProductService {
 
     public Product createProduct(String name, String description, double price, int stock, MultipartFile image) throws IOException {
         Map respones = cloudinaryService.uploadImage(image);
-        System.out.println("success: " + respones.get("secure_url"));
+//        System.out.println("success: " + respones.get("secure_url"));
         Product product = new Product();
         product.setName(name);
         product.setDescription(description);

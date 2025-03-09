@@ -104,7 +104,7 @@ public class UserService {
             return registeredUser;
 
         } catch (Exception e) {
-            System.out.println("Error during user registration: " + e.getMessage());
+//            System.out.println("Error during user registration: " + e.getMessage());
             throw new RuntimeException("User registration failed", e);
         }
     }
@@ -121,6 +121,8 @@ public class UserService {
                 String jwt = jwtUtil.generateToken(user.getUsername(), user.getRole().getName());
 
                 return jwt;
+            } else {
+                return null;
             }
         }
 

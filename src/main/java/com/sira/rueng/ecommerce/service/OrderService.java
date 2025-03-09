@@ -113,4 +113,9 @@ public class OrderService {
         Order order = getOrderById(orderId);
         return orderDetailRepository.findByOrder(order);
     }
+
+    public List<Order> getOrderByUserId(Integer userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        return orders;
+    }
 }

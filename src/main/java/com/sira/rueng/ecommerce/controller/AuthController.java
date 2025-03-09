@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User userInput) {
         try {
-            System.out.println(userInput);
+//            System.out.println(userInput);
             // Validate input
             if (userInput == null ||
                     StringUtils.isEmpty(userInput.getUsername()) ||
@@ -67,6 +68,9 @@ public class AuthController {
             // Login และรับ JWT
             String jwt = userService.login(loginRequest.getUsername(), loginRequest.getPassword());
 
+            if (jwt == null) { // If JWT is null, return UNAUTHORIZED
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Invalid username or password", 401));
+            }
             // ตั้งค่า Cookie
             Cookie cookie = new Cookie("token", jwt);
             cookie.setHttpOnly(true);
@@ -101,17 +105,26 @@ public class AuthController {
     }
 
     @GetMapping("/getToken")
-    public ResponseEntity getToken(HttpServletRequest request) {
+    public ResponseEntity<?> getToken(HttpServletRequest request) {
+        System.out.println("entry");
         Cookie[] cookies = request.getCookies();
 
-        if (cookies == null) {
+        // ✅ Prevent NullPointerException
+        if (cookies == null || cookies.length == 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorResponse("No cookies found", 400));
         }
 
+        // Print all cookies for debugging
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("token")) {
+            System.out.println("Cookie Name: " + cookie.getName() + ", Value: " + cookie.getValue());
+        }
+
+        for (Cookie cookie : cookies) {
+            if ("token".equals(cookie.getName())) {
+                System.out.println("found");
                 String token = cookie.getValue();
+                System.out.println(token);
                 return ResponseEntity.ok(Collections.singletonMap("token", token));
             }
         }
@@ -119,9 +132,11 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Token not found", 404));
     }
 
+
+
     @GetMapping("/getAllClaims")
     public ResponseEntity<?> getAllClaims(@RequestHeader("Authorization") String token) {
-        System.out.println("in this get all claims" + token);
+//        System.out.println("in this get all claims" + token);
         try {
             // ✅ เอา "Bearer " ออกก่อน
             if (token.startsWith("Bearer ")) {
@@ -130,7 +145,7 @@ public class AuthController {
 
             // ✅ ดึง Claims จาก Token
             Claims claims = jwtUtil.extractAllClaims(token);
-            System.out.println("this is token: " + token);
+//            System.out.println("this is token: " + token);
 
             return ResponseEntity.ok(claims);
         } catch (Exception e) {
