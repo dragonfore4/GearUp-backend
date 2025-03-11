@@ -5,6 +5,10 @@ import com.sira.rueng.ecommerce.response.ErrorResponse;
 import com.sira.rueng.ecommerce.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Limit;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +30,39 @@ public class ProductController {
         this.productService = productService;
     }
 
+//    @GetMapping("/products")
+//    public ResponseEntity<List<Product>> getAllProducts(
+//            @RequestParam(defaultValue = "0") int page
+//    ) {
+//        System.out.println("The page is " + page);
+//        // สร้าง Pageable เพื่อแบ่งหน้า
+//        List<Product> productList = productService.getAllProducts();
+//        return ResponseEntity.ok(productList);
+//    }
+
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> productList = productService.getAllProducts();
-        return ResponseEntity.ok(productList);
+    public ResponseEntity<Map<String, Object>> getProductsByPriceRange(
+            @RequestParam(defaultValue = "0") double minPrice,
+            @RequestParam(defaultValue = "100000") double maxPrice,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int limit) {
+
+        // สร้าง Pageable สำหรับ pagination
+        Pageable pageable = PageRequest.of(page, limit);
+
+        // ดึงข้อมูลสินค้าตามช่วงราคาและ pagination
+        Page<Product> productPage = productService.getProductsByPriceRange(minPrice, maxPrice, pageable);
+
+        // เตรียมข้อมูลที่จะส่งกลับ
+        Map<String, Object> response = new HashMap<>();
+        response.put("products", productPage.getContent()); // รายการสินค้าที่กรองแล้ว
+        response.put("totalItems", productPage.getTotalElements()); // จำนวนสินค้าทั้งหมด
+        response.put("totalPages", productPage.getTotalPages()); // จำนวนหน้าทั้งหมด
+        response.put("currentPage", productPage.getNumber()); // หน้าปัจจุบัน
+
+        return ResponseEntity.ok(response);
     }
+
 
     @GetMapping("/products/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Integer id) {
@@ -67,9 +99,12 @@ public class ProductController {
             @RequestParam("stock") int stock,
             @RequestParam(value = "image", required = false) MultipartFile image) {
         try {
+            System.out.println("in create product" + name + " " +  description + " " + price+ " " + stock);
+            System.out.println(image);
             Product createdProduct = productService.createProduct(name, description, price, stock, image);
 
             return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+//            return ResponseEntity.ok("ht");
         } catch (Exception e) {
             return new ResponseEntity<>("Product creation failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -100,5 +135,6 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "An Error occured while deleting the product"));
         }
     }
+
 
 }

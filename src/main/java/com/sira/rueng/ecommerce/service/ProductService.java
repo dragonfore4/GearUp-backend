@@ -3,6 +3,9 @@ package com.sira.rueng.ecommerce.service;
 import com.sira.rueng.ecommerce.dao.ProductRepository;
 import com.sira.rueng.ecommerce.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,16 +26,14 @@ public class ProductService {
         this.cloudinaryService = cloudinaryService;
     }
 
-    // Create
-//    public Product createProduct(Product product) {
-//        product.setId(null);
-//        return productRepository.save(product);
-//    }
-
-    // Read
+    //     Read
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
+//    public Page<Product> getAllProducts(int page, int limit) {
+//        Pageable pageable = PageRequest.of(page, limit);
+//        return productRepository.findAll(pageable);
+//    }
 
     public Optional<Product> getProductById(Integer id) {
         return productRepository.findById(id);
@@ -73,5 +74,10 @@ public class ProductService {
         product.setImageUrl((String) respones.get("secure_url"));
         return productRepository.save(product);
 
+    }
+
+    public Page<Product> getProductsByPriceRange(double minPrice, double maxPrice, Pageable pageable) {
+        // ใช้ query เพื่อกรองสินค้าตามช่วงราคา
+        return productRepository.findByPriceRange(minPrice, maxPrice, pageable);
     }
 }
