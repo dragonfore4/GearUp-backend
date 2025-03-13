@@ -34,7 +34,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User userInput) {
         try {
-//            System.out.println(userInput);
+            System.out.println(userInput);
             // Validate input
             if (userInput == null ||
                     StringUtils.isEmpty(userInput.getUsername()) ||
