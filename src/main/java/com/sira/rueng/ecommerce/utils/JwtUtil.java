@@ -3,6 +3,7 @@ package com.sira.rueng.ecommerce.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -13,9 +14,14 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "mySuperSecretKeyForJWTmySuperSecretKeyForJWT"; // ควรใช้ ENV variable
+    private SecretKey SIGNING_KEY;
 
-    private static final SecretKey SIGNING_KEY = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+    @Autowired
+    public JwtUtil(SecretKey SIGNING_KEY) {
+        this.SIGNING_KEY = SIGNING_KEY;
+    }
+
+
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 ชั่วโมง
 
     public String generateToken(String username, String role) {
