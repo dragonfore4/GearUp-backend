@@ -30,20 +30,11 @@ public class ProductController {
         this.productService = productService;
     }
 
-//    @GetMapping("/products")
-//    public ResponseEntity<List<Product>> getAllProducts(
-//            @RequestParam(defaultValue = "0") int page
-//    ) {
-//        System.out.println("The page is " + page);
-//        // สร้าง Pageable เพื่อแบ่งหน้า
-//        List<Product> productList = productService.getAllProducts();
-//        return ResponseEntity.ok(productList);
-//    }
-
     @GetMapping("/products")
     public ResponseEntity<Map<String, Object>> getProductsByPriceRange(
             @RequestParam(defaultValue = "0") double minPrice,
             @RequestParam(defaultValue = "100000") double maxPrice,
+            @RequestParam(required = false, defaultValue = "") Integer productTypeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int limit) {
 
@@ -51,7 +42,7 @@ public class ProductController {
         Pageable pageable = PageRequest.of(page, limit);
 
         // ดึงข้อมูลสินค้าตามช่วงราคาและ pagination
-        Page<Product> productPage = productService.getProductsByPriceRange(minPrice, maxPrice, pageable);
+        Page<Product> productPage = productService.getProductsByFilters(minPrice, maxPrice, productTypeId, pageable);
 
         // เตรียมข้อมูลที่จะส่งกลับ
         Map<String, Object> response = new HashMap<>();
@@ -79,32 +70,21 @@ public class ProductController {
     }
 
     // Create Product
-//    @PostMapping("/products")
-//    public ResponseEntity<?> createProduct(@RequestBody Product product) {
-//        try {
-//            Product createdProduct = productService.createProduct(product);
-//
-//            return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>("Product creation failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-//        }
-//    }
-
-    // Create Product
     @PostMapping("/products")
     public ResponseEntity<?> createProduct(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
             @RequestParam("price") double price,
             @RequestParam("stock") int stock,
-            @RequestParam(value = "image", required = false) MultipartFile image) {
+            @RequestParam(value = "image", required = false) MultipartFile image,
+            @RequestParam("productTypeId") Integer productTypeId) {
         try {
-            System.out.println("in create product" + name + " " +  description + " " + price+ " " + stock);
+            System.out.println("in create product" + name + " " + description + " " + price + " " + stock + " " + productTypeId);
             System.out.println(image);
-            Product createdProduct = productService.createProduct(name, description, price, stock, image);
-
+            System.out.println(image.getOriginalFilename());
+            Product createdProduct = productService.createProduct(name, description, price, stock, image,productTypeId);
             return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
-//            return ResponseEntity.ok("ht");
+//            return null;
         } catch (Exception e) {
             return new ResponseEntity<>("Product creation failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }

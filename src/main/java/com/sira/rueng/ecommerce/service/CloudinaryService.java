@@ -47,6 +47,7 @@ public class CloudinaryService {
                 "unique_filename", false,
                 "overwrite", true
         );
+        System.out.println("hello");
         return cloudinary.uploader().upload(file.getBytes(), params);
     }
 

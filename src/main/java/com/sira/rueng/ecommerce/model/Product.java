@@ -30,6 +30,10 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @ManyToOne
+    @JoinColumn(name = "product_type_id")
+    private ProductType productType;
+
     public Product() {
 
     }
