@@ -46,7 +46,12 @@ public class AuthController {
 
             // Perform registration
             User registeredUser = userService.register(userInput);
-            return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
+            // Response
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "Registered  successfully");
+
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorResponse(e.getMessage(), 399));
@@ -76,7 +81,7 @@ public class AuthController {
             cookie.setHttpOnly(true);
             cookie.setPath("/");
             cookie.setMaxAge(3600);
-            cookie.setAttribute("SameSite", "None");
+            cookie.setAttribute("SameSite", "Lax");
             cookie.setSecure(false); // เปลี่ยนเป็น true ถ้าใช้ HTTPS
             response.addCookie(cookie);
 
