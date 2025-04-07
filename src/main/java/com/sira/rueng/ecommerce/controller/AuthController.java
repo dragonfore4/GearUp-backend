@@ -81,8 +81,9 @@ public class AuthController {
             cookie.setHttpOnly(true);
             cookie.setPath("/");
             cookie.setMaxAge(3600);
-            cookie.setAttribute("SameSite", "Lax");
-            cookie.setSecure(false); // เปลี่ยนเป็น true ถ้าใช้ HTTPS
+//            cookie.setAttribute("SameSite", "Lax");
+            cookie.setAttribute("SameSite", "None");
+            cookie.setSecure(true); // เปลี่ยนเป็น true ถ้าใช้ HTTPS
             response.addCookie(cookie);
 
             // Response
@@ -102,8 +103,10 @@ public class AuthController {
         // ลบ Cookie
         Cookie cookie = new Cookie("token", "");
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(0);
+        cookie.setAttribute("SameSite", "None");
         response.addCookie(cookie);
 
         return ResponseEntity.ok(Collections.singletonMap("message", "Logged out successfully"));
