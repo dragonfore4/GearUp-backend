@@ -85,4 +85,9 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/testJenkins")
+    public String testJenkins() {
+        return "THis is jenkins";
+    }
 }
