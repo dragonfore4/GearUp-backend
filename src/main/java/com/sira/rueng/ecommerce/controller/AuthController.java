@@ -81,7 +81,9 @@ public class AuthController {
             cookie.setHttpOnly(true);
             cookie.setPath("/");
             cookie.setMaxAge(3600);
+            // not production
 //            cookie.setAttribute("SameSite", "Lax");
+//            cookie.setSecure(false); // เปลี่ยนเป็น true ถ้าใช้ HTTPS
             cookie.setAttribute("SameSite", "None");
             cookie.setSecure(true); // เปลี่ยนเป็น true ถ้าใช้ HTTPS
             response.addCookie(cookie);

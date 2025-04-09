@@ -68,11 +68,11 @@ public class ProductService {
     public Product createProduct(String name, String description, double price, int stock, MultipartFile image, int productTypeId) throws IOException {
 
         ProductType productType = productTypeRepository.findById(productTypeId).orElseThrow(() -> new EntityNotFoundException("ProductType not found with id - " + productTypeId));
-        System.out.println(productType.getId());
-        System.out.println(image.getOriginalFilename());
+//        System.out.println(productType.getId());
+//        System.out.println(image.getOriginalFilename());
 
         Map respones = cloudinaryService.uploadImage(image);
-        System.out.println("success: " + respones.get("secure_url"));
+//        System.out.println("success: " + respones.get("secure_url"));
 
         Product product = new Product();
         product.setName(name);

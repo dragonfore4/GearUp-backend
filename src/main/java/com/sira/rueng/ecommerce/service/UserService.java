@@ -71,7 +71,6 @@ public class UserService {
     // register
     @Transactional
     public User register(User user) {
-        try {
             if (userRepository.existsByUsername(user.getUsername())) {
                 throw new RuntimeException("Username already exists");
             }
@@ -102,11 +101,6 @@ public class UserService {
 
 
             return registeredUser;
-
-        } catch (Exception e) {
-//            System.out.println("Error during user registration: " + e.getMessage());
-            throw new RuntimeException("User registration failed", e);
-        }
     }
 
     // login
