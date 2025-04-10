@@ -1,0 +1,89 @@
+[33mcommit b9d8ebc9014240c76c36b080d50e0e9d5f1bf2ca[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Thu Apr 10 14:12:20 2025 +0700
+
+    add login with google oauth2
+
+[33mcommit 718cefb7c3bfa181ca0bfe645b93e616cf966c78[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Wed Apr 9 12:33:04 2025 +0700
+
+    add unit tests
+
+[33mcommit bdafd95a974e8855631fef1e3a700ce710c338d6[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Tue Apr 8 12:56:43 2025 +0700
+
+    add new testJenkins for jenkins test pipeline
+
+[33mcommit 1355bcc94b9737de8cf1cc599a7f011e4a5c5c5a[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Mon Apr 7 21:44:19 2025 +0700
+
+    final production change Samesite to None
+
+[33mcommit c25a98564300c67bef33e51f2df49436a7bcc846[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Sat Mar 22 23:20:52 2025 +0700
+
+    set cookies from backend successfully change from SameSite None to Lax
+
+[33mcommit a13f488378dedc1ee45fc929cb1251eb6f6f312b[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Fri Mar 21 13:31:18 2025 +0700
+
+    add ProductTypeId, when create new Product handle productTypeId, implement query with ProductTYpeId
+
+[33mcommit 143689dc5c5303b38239a8eb030d287732f1e6c1[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Sat Mar 15 22:23:23 2025 +0700
+
+    fix using jwt bean
+
+[33mcommit 7ef99ca82408f1e8db513709c47ec7043cfadcba[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Thu Mar 13 23:04:15 2025 +0700
+
+    fix update product to edit stock
+
+[33mcommit c6d0a50d9db8548d16ff9b35df6fa8ecc27bc111[m
+Author: dragonfore4 <105077574+dragonfore4@users.noreply.github.com>
+Date:   Tue Mar 11 23:53:06 2025 +0700
+
+    Create README.md
+
+[33mcommit 7607efa7d00826ce3e6a0fe4e233601efa5a6975[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Tue Mar 11 23:52:23 2025 +0700
+
+    revise HELP.md
+
+[33mcommit e90c85f50b8021deabf65749dfdd79819492db47[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Tue Mar 11 23:49:55 2025 +0700
+
+    Remove docker-compose.yml
+
+[33mcommit fb58f135c518519067a30c3aec73f306e60c74c8[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Tue Mar 11 23:44:42 2025 +0700
+
+    change gitignore
+
+[33mcommit e7ed861c42dc1aca9d447005dad9a032f863d612[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Tue Mar 11 23:40:18 2025 +0700
+
+    change getProduct implementation to filter min max and pagination also
+
+[33mcommit 29be61abafe1c9d4873421e977e5cca4f4edf8e8[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Sun Mar 9 22:26:57 2025 +0700
+
+    add getOrderByUserId path
+
+[33mcommit 278f63d6b6503da8e92220872ac5e00c4ba89cb9[m
+Author: kemkai <kemkaikub@gmail.com>
+Date:   Sat Mar 8 13:55:36 2025 +0700
+
+    Initial commit
