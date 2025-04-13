@@ -13,22 +13,10 @@ import java.util.Map;
 @RequestMapping("/api/dummy")
 public class DummyController {
 
-    private CloudinaryService cloudinaryService;
 
-    public DummyController(CloudinaryService cloudinaryService) {
-        this.cloudinaryService = cloudinaryService;
-    }
-
-    @PostMapping("/upload")
-    public ResponseEntity<Map> uploadFromUrl(@RequestParam(value = "image", required = false) MultipartFile image) {
-        try {
-//            System.out.println(image.getOriginalFilename());
-//            Map result = cloudinaryService.uploadImage(image);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @GetMapping("/testJenkins")
+    public String testJenkins() {
+        return "THis is jenkins";
     }
 
 }

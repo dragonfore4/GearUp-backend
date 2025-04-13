@@ -47,11 +47,17 @@ public class SecurityConfig {
                         // auth
                         .requestMatchers("/api/auth/**").permitAll()
                         // users
-                        .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("admin")
                         .requestMatchers(HttpMethod.POST, "/api/users/**").hasAnyRole("admin")
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyRole("admin")
                         .requestMatchers(HttpMethod.PUT, "/api/users/**").hasAnyRole("admin")
                         .requestMatchers("/api/orders").hasAnyRole("customer","admin")
+                        // orders
+                                .requestMatchers(HttpMethod.GET, "/api/orders/**").hasAnyRole("admin", "customer")
+                                .requestMatchers(HttpMethod.POST, "/api/orders/**").hasRole("customer")
+                                .requestMatchers(HttpMethod.PUT, "/api/orders/**/status").hasRole("admin")
+                                .requestMatchers(HttpMethod.DELETE, "/api/order/**").hasRole("admin")
                         // cart-detail
                         .requestMatchers("/api/cartDetail/**").permitAll()
                         .anyRequest().permitAll()

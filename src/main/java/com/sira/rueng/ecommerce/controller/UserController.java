@@ -86,8 +86,5 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/testJenkins")
-    public String testJenkins() {
-        return "THis is jenkins";
-    }
+
 }
