@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        System.out.println("Startttttttttttttttttttttttttttttttttttttttttttt");
+        System.out.println("Starttttttttttttttttttttttttttttttttttttttttttttooo");
         // Log Request URL and HTTP method
         System.out.println("Request URL: " + request.getRequestURL());
         System.out.println("Request Method: " + request.getMethod());

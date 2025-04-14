@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.SQLOutput;
 import java.util.Map;
 
 @RestController
@@ -16,6 +17,7 @@ public class DummyController {
 
     @GetMapping("/testJenkins")
     public String testJenkins() {
+        System.out.println("Test");
         return "THis is jenkins";
     }
 
