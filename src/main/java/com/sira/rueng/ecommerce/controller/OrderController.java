@@ -25,10 +25,26 @@ public class OrderController {
     }
 
     // 📌 2. ดึงคำสั่งซื้อทั้งหมด
+//    @GetMapping("/orders")
+//    public ResponseEntity<List<Order>> getAllOrders() {
+//        List<Order> order = orderService.getAllOrders();
+//        return ResponseEntity.ok(order);
+//    }
+
+    // 📌 2. ดึงคำสั่งซื้อทั้งหมด
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> order = orderService.getAllOrders();
-        return ResponseEntity.ok(order);
+    public ResponseEntity<?> getAllOrders(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String status
+    ) {
+        if (page != null && size != null) {
+            // 📦 กรณีส่ง page + size = ใช้ pagination
+            return ResponseEntity.ok(orderService.getAllOrdersPaginated(page, size, status));
+        } else {
+            // 🧾 ไม่ส่ง page + size = ดึงทั้งหมด
+            return ResponseEntity.ok(orderService.getAllOrders());
+        }
     }
 
     // 📌 3. ดึงคำสั่งซื้อโดย ID

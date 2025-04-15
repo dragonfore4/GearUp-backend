@@ -4,11 +4,17 @@ import com.sira.rueng.ecommerce.dao.*;
 import com.sira.rueng.ecommerce.model.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderService {
@@ -118,4 +124,24 @@ public class OrderService {
         List<Order> orders = orderRepository.findByUserId(userId);
         return orders;
     }
+
+    public Map<String, Object> getAllOrdersPaginated(int page, int size, String status) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Order> orderPage;
+
+        if (status != null && !status.isEmpty()) {
+            orderPage = orderRepository.findByStatus(status, pageable);
+        } else {
+            orderPage = orderRepository.findAll(pageable);
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", orderPage.getContent());
+        response.put("totalPages", orderPage.getTotalPages());
+        response.put("currentPage", orderPage.getNumber());
+        response.put("totalItems", orderPage.getTotalElements());
+
+        return response;
+    }
+
 }
