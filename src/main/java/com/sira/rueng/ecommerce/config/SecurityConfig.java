@@ -55,7 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/orders").hasAnyRole("customer","admin")
                         // orders
                                 .requestMatchers(HttpMethod.GET, "/api/orders/**").hasAnyRole("admin", "customer")
-                                .requestMatchers(HttpMethod.POST, "/api/orders/**").hasRole("customer")
+                                .requestMatchers(HttpMethod.POST, "/api/orders/**").hasAnyRole("admin","customer")
                                 .requestMatchers(HttpMethod.PUT, "/api/orders/*/status").hasRole("admin")
                                 .requestMatchers(HttpMethod.DELETE, "/api/order/**").hasRole("admin")
                         // cart-detail
