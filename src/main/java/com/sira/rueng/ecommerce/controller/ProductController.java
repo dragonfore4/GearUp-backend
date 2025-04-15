@@ -5,10 +5,7 @@ import com.sira.rueng.ecommerce.response.ErrorResponse;
 import com.sira.rueng.ecommerce.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Limit;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +33,11 @@ public class ProductController {
             @RequestParam(defaultValue = "100000") double maxPrice,
             @RequestParam(required = false, defaultValue = "") Integer productTypeId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int limit) {
+            @RequestParam(defaultValue = "12") int limit,
+            @RequestParam(required = false, defaultValue = "") String sortBy) {
 
         // สร้าง Pageable สำหรับ pagination
-        Pageable pageable = PageRequest.of(page, limit);
+        Pageable pageable = PageRequest.of(page, limit, getSortOption(sortBy));
 
         // ดึงข้อมูลสินค้าตามช่วงราคาและ pagination
         Page<Product> productPage = productService.getProductsByFilters(minPrice, maxPrice, productTypeId, pageable);
@@ -116,5 +114,14 @@ public class ProductController {
         }
     }
 
+    private Sort getSortOption(String sortBy) {
+        return switch (sortBy) {
+            case "price_asc" -> Sort.by(Sort.Direction.ASC, "price");
+            case "price_desc" -> Sort.by(Sort.Direction.DESC, "price");
+            case "newest" -> Sort.by(Sort.Direction.DESC, "createdAt");
+            case "oldest" -> Sort.by(Sort.Direction.ASC, "createdAt");
+            default -> Sort.unsorted();
+        };
+    }
 
 }
