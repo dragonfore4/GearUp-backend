@@ -17,7 +17,6 @@ public class DummyController {
 
     @GetMapping("/testJenkins")
     public String testJenkins() {
-        System.out.println("Test");
         return "THis is jenkins";
     }
 
