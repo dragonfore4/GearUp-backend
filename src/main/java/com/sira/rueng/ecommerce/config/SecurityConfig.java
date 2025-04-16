@@ -4,6 +4,7 @@ import com.sira.rueng.ecommerce.model.User;
 import com.sira.rueng.ecommerce.service.UserService;
 import com.sira.rueng.ecommerce.utils.JwtUtil;
 import jakarta.servlet.http.Cookie;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,6 +27,9 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtUtil jwtUtil;
     private final UserService userService;
+
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, JwtUtil jwtUtil, UserService userService ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
@@ -98,7 +102,7 @@ public class SecurityConfig {
                             response.addCookie(cookie);
 
 //                            response.sendRedirect("http://localhost:3000/");
-                            response.sendRedirect("http://localhost:3000/");
+                            response.sendRedirect(frontendUrl);
                         })
                 )
                 .csrf(csrf -> csrf.disable())
